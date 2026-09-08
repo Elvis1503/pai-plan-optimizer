@@ -14,16 +14,378 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      auditoria: {
+        Row: {
+          acao: string
+          created_at: string
+          detalhes: Json | null
+          entidade: string
+          entidade_id: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          acao: string
+          created_at?: string
+          detalhes?: Json | null
+          entidade: string
+          entidade_id?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          acao?: string
+          created_at?: string
+          detalhes?: Json | null
+          entidade?: string
+          entidade_id?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      cenario_periodos: {
+        Row: {
+          capacidade_alojamento: number
+          capacidade_incubacao: number
+          cenario_id: string
+          id: string
+          mes: number
+          meta_abate_kg: number
+          ovos_disponiveis: number
+        }
+        Insert: {
+          capacidade_alojamento?: number
+          capacidade_incubacao?: number
+          cenario_id: string
+          id?: string
+          mes: number
+          meta_abate_kg?: number
+          ovos_disponiveis?: number
+        }
+        Update: {
+          capacidade_alojamento?: number
+          capacidade_incubacao?: number
+          cenario_id?: string
+          id?: string
+          mes?: number
+          meta_abate_kg?: number
+          ovos_disponiveis?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cenario_periodos_cenario_id_fkey"
+            columns: ["cenario_id"]
+            isOneToOne: false
+            referencedRelation: "cenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cenarios: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          descricao: string | null
+          filial_id: string | null
+          id: string
+          is_base: boolean
+          mortalidade: number
+          nome: string
+          ovos_por_matriz: number
+          peso_medio_kg: number
+          plano_id: string
+          produto_id: string | null
+          rendimento: number
+          taxa_eclosao: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          filial_id?: string | null
+          id?: string
+          is_base?: boolean
+          mortalidade?: number
+          nome: string
+          ovos_por_matriz?: number
+          peso_medio_kg?: number
+          plano_id: string
+          produto_id?: string | null
+          rendimento?: number
+          taxa_eclosao?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          filial_id?: string | null
+          id?: string
+          is_base?: boolean
+          mortalidade?: number
+          nome?: string
+          ovos_por_matriz?: number
+          peso_medio_kg?: number
+          plano_id?: string
+          produto_id?: string | null
+          rendimento?: number
+          taxa_eclosao?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cenarios_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cenarios_plano_id_fkey"
+            columns: ["plano_id"]
+            isOneToOne: false
+            referencedRelation: "planos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cenarios_produto_id_fkey"
+            columns: ["produto_id"]
+            isOneToOne: false
+            referencedRelation: "produtos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      empresas: {
+        Row: {
+          cnpj: string | null
+          created_at: string
+          id: string
+          nome: string
+        }
+        Insert: {
+          cnpj?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+        }
+        Update: {
+          cnpj?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+        }
+        Relationships: []
+      }
+      filiais: {
+        Row: {
+          capacidade_abate_dia: number
+          codigo: string | null
+          created_at: string
+          id: string
+          nome: string
+          regiao_id: string
+        }
+        Insert: {
+          capacidade_abate_dia?: number
+          codigo?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+          regiao_id: string
+        }
+        Update: {
+          capacidade_abate_dia?: number
+          codigo?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          regiao_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "filiais_regiao_id_fkey"
+            columns: ["regiao_id"]
+            isOneToOne: false
+            referencedRelation: "regioes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      planos: {
+        Row: {
+          ano: number
+          aprovado_em: string | null
+          aprovado_por: string | null
+          created_at: string
+          created_by: string | null
+          empresa_id: string
+          id: string
+          nome: string
+          status: string
+          versao: number
+        }
+        Insert: {
+          ano: number
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          created_at?: string
+          created_by?: string | null
+          empresa_id: string
+          id?: string
+          nome: string
+          status?: string
+          versao?: number
+        }
+        Update: {
+          ano?: number
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          created_at?: string
+          created_by?: string | null
+          empresa_id?: string
+          id?: string
+          nome?: string
+          status?: string
+          versao?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "planos_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      produtos: {
+        Row: {
+          created_at: string
+          empresa_id: string
+          id: string
+          nome: string
+          peso_medio_kg: number
+          rendimento: number
+        }
+        Insert: {
+          created_at?: string
+          empresa_id: string
+          id?: string
+          nome: string
+          peso_medio_kg?: number
+          rendimento?: number
+        }
+        Update: {
+          created_at?: string
+          empresa_id?: string
+          id?: string
+          nome?: string
+          peso_medio_kg?: number
+          rendimento?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "produtos_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          nome: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          nome?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          nome?: string | null
+        }
+        Relationships: []
+      }
+      regioes: {
+        Row: {
+          created_at: string
+          empresa_id: string
+          id: string
+          nome: string
+        }
+        Insert: {
+          created_at?: string
+          empresa_id: string
+          id?: string
+          nome: string
+        }
+        Update: {
+          created_at?: string
+          empresa_id?: string
+          id?: string
+          nome?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regioes_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      pode_planejar: { Args: never; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role:
+        | "administrador"
+        | "executivo"
+        | "planejador_corporativo"
+        | "planejador_regional"
+        | "gestor_filial"
+        | "operacao"
+        | "integracao"
+        | "auditor"
+        | "leitor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +512,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: [
+        "administrador",
+        "executivo",
+        "planejador_corporativo",
+        "planejador_regional",
+        "gestor_filial",
+        "operacao",
+        "integracao",
+        "auditor",
+        "leitor",
+      ],
+    },
   },
 } as const
