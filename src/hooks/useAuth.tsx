@@ -89,6 +89,6 @@ export async function registrarAuditoria(
     acao,
     entidade,
     entidade_id,
-    detalhes: detalhes ?? {},
+    detalhes: JSON.parse(JSON.stringify(detalhes ?? {})),
   });
 }
