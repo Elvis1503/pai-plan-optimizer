@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAuditoriaRouteImport } from './routes/_authenticated/auditoria'
+import { Route as AuthenticatedCadastrosRouteImport } from './routes/_authenticated/cadastros'
 import { Route as AuthenticatedCompararRouteImport } from './routes/_authenticated/comparar'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedSimuladorRouteImport } from './routes/_authenticated/simulador'
@@ -29,6 +31,16 @@ const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAuditoriaRoute = AuthenticatedAuditoriaRouteImport.update({
+  id: '/auditoria',
+  path: '/auditoria',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCadastrosRoute = AuthenticatedCadastrosRouteImport.update({
+  id: '/cadastros',
+  path: '/cadastros',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCompararRoute = AuthenticatedCompararRouteImport.update({
   id: '/comparar',
@@ -49,6 +61,8 @@ const AuthenticatedSimuladorRoute = AuthenticatedSimuladorRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/auditoria': typeof AuthenticatedAuditoriaRoute
+  '/cadastros': typeof AuthenticatedCadastrosRoute
   '/comparar': typeof AuthenticatedCompararRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/simulador': typeof AuthenticatedSimuladorRoute
@@ -56,6 +70,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/auditoria': typeof AuthenticatedAuditoriaRoute
+  '/cadastros': typeof AuthenticatedCadastrosRoute
   '/comparar': typeof AuthenticatedCompararRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/simulador': typeof AuthenticatedSimuladorRoute
@@ -65,20 +81,38 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/auditoria': typeof AuthenticatedAuditoriaRoute
+  '/_authenticated/cadastros': typeof AuthenticatedCadastrosRoute
   '/_authenticated/comparar': typeof AuthenticatedCompararRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/simulador': typeof AuthenticatedSimuladorRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/comparar' | '/dashboard' | '/simulador'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/auditoria'
+    | '/cadastros'
+    | '/comparar'
+    | '/dashboard'
+    | '/simulador'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/comparar' | '/dashboard' | '/simulador'
+  to:
+    | '/'
+    | '/auth'
+    | '/auditoria'
+    | '/cadastros'
+    | '/comparar'
+    | '/dashboard'
+    | '/simulador'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/auditoria'
+    | '/_authenticated/cadastros'
     | '/_authenticated/comparar'
     | '/_authenticated/dashboard'
     | '/_authenticated/simulador'
@@ -113,6 +147,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/auditoria': {
+      id: '/_authenticated/auditoria'
+      path: '/auditoria'
+      fullPath: '/auditoria'
+      preLoaderRoute: typeof AuthenticatedAuditoriaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cadastros': {
+      id: '/_authenticated/cadastros'
+      path: '/cadastros'
+      fullPath: '/cadastros'
+      preLoaderRoute: typeof AuthenticatedCadastrosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/comparar': {
       id: '/_authenticated/comparar'
       path: '/comparar'
@@ -138,12 +186,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAuditoriaRoute: typeof AuthenticatedAuditoriaRoute
+  AuthenticatedCadastrosRoute: typeof AuthenticatedCadastrosRoute
   AuthenticatedCompararRoute: typeof AuthenticatedCompararRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedSimuladorRoute: typeof AuthenticatedSimuladorRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAuditoriaRoute: AuthenticatedAuditoriaRoute,
+  AuthenticatedCadastrosRoute: AuthenticatedCadastrosRoute,
   AuthenticatedCompararRoute: AuthenticatedCompararRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedSimuladorRoute: AuthenticatedSimuladorRoute,

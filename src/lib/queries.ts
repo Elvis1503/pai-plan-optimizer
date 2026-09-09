@@ -115,9 +115,18 @@ export const auditoriaQuery = queryOptions({
   queryFn: async () => {
     const { data, error } = await supabase
       .from("auditoria")
-      .select("id, acao, entidade, entidade_id, detalhes, created_at, user_id, profiles:user_id(nome)")
+      .select("id, acao, entidade, entidade_id, detalhes, created_at, user_id")
       .order("created_at", { ascending: false })
       .limit(200);
+    if (error) throw error;
+    return data ?? [];
+  },
+});
+
+export const profilesQuery = queryOptions({
+  queryKey: ["profiles"],
+  queryFn: async () => {
+    const { data, error } = await supabase.from("profiles").select("id, nome");
     if (error) throw error;
     return data ?? [];
   },
