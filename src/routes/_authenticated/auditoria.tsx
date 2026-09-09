@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/AppShell";
-import { auditoriaQuery } from "@/lib/queries";
+import { auditoriaQuery, profilesQuery } from "@/lib/queries";
 import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/_authenticated/auditoria")({
@@ -23,6 +23,8 @@ export const Route = createFileRoute("/_authenticated/auditoria")({
 
 function AuditoriaPage() {
   const { data: registros = [] } = useQuery(auditoriaQuery);
+  const { data: perfis = [] } = useQuery(profilesQuery);
+  const nomePor = new Map(perfis.map((p) => [p.id, p.nome]));
 
   return (
     <AppShell
@@ -49,7 +51,7 @@ function AuditoriaPage() {
                     {new Date(r.created_at as string).toLocaleString("pt-BR")}
                   </td>
                   <td className="px-4 py-2">
-                    {(r.profiles as { nome: string | null } | null)?.nome ?? "—"}
+                    {nomePor.get(r.user_id as string) ?? "—"}
                   </td>
                   <td className="px-4 py-2">
                     <Badge variant="outline" className="font-normal">
